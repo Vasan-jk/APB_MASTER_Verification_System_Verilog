@@ -1,3 +1,5 @@
+`include "interface.sv"
+`include "transaction.sv"
 class monitor;
 transaction trans;
 mailbox #(transaction)mon2scb;
@@ -13,13 +15,30 @@ task run();
         repeat(`num_of_transaction) begin
                 @(vif.mon_cb);
                 trans = new();
-		vif.mon_cb.PRDATA = trans.PRDATA;
-		vif.mon_cb.PREADY = trans.PREADY; 
-		vif.mon_cb.PSLVERR = trans.PSLVERR;
-		vif.mon_cb.transfer =  write_read, addr_in, wdata_in, strb_in;
-input PADDR, PSEL, PENABLE, PWRITE, PWDATA, PSTRB, rdata_out, transfer_done, error;               
-                trans.data_out = vif.mon_cb.data_out;
-        end
+		trans.PRDATA = vif.mon_cb.PRDATA;
+		trans.PSLVERR = vif.mon_cb.PSLVERR;
+		trans.transfer = vif.mon_cb.transfer;
+		trans.write_read = vif.mon_cb.write_read;
+		trans.addr_in = vif.mon_cb.addr_in;
+		trans.wdata_in = vif.mon_cb.wdata_in; 
+		trans.strb_in = vif.mon_cb.strb_in;
+		trans.PADDR = vif.mon_cb.PADDR;
+		trans.PSEL = vif.mon_cb.PSEL;
+		trans.PENABLE = vif.mon_cb.PENABLE;
+		trans.PWRITE = vif.mon_cb.PWRITE;
+	 	trans.PWDATA = vif.mon_cb.PWDATA;
+		trans.PSTRB = vif.mon_cb.PSTRB;
+		trans.rdata_out = vif.mon_cb.rdata_out;
+		trans.transfer_done = vif.mon_cb.transfer_done; 
+		trans.error = vif.mon_cb.error;               
+        	$display("\n[MONITOR] INPUT : transfer=%0b write_read=%0b addr_in=%0h wdata_in=%0h strb_in=%0h",trans.transfer,trans.write_read,trans.addr_in,trans.wdata_in,trans.strb_in);
+
+		$display("[MONITOR] SLAVE : PRDATA=%0h PREADY=%0b PSLVERR=%0b",trans.PRDATA,trans.PREADY,trans.PSLVERR);
+
+		$display("[MONITOR] APB   : PADDR=%0h PSEL=%0b PENABLE=%0b PWRITE=%0b PWDATA=%0h PSTRB=%0h",trans.PADDR,trans.PSEL,trans.PENABLE,trans.PWRITE,trans.PWDATA,trans.PSTRB);
+
+		$display("[MONITOR] OUTPUT: rdata_out=%0h transfer_done=%0b error=%0b",trans.rdata_out,trans.transfer_done,trans.error);
+	end
         @(vif.mon_cb);
 endtask
 
