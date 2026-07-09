@@ -16,7 +16,10 @@ bit [`DATA_WIDTH/8 -1:0]PSTRB;
 bit [`DATA_WIDTH-1:0] rdata_out;
 bit transfer_done;
 bit error;
-
+int wait_state;
+constraint w{
+	wait_state == 0;
+	}
 constraint base{
 	PREADY == 1;
 	transfer == 1;
