@@ -56,8 +56,8 @@ task run();
           vif.drv_cb.PREADY <= 1;
           vif.drv_cb.PSLVERR <= trans.PSLVERR;
           vif.drv_cb.PRDATA <= trans.PRDATA; 
-          wait(vif.drv_cb.transfer_done);
        $display("[%0t][DRV] PRDATA = %0h, PREADY = %0h, PSLVERR = %0b, transfer = %0b, write_read = %b, addr_in = %0h, wdata_in = %0h, strb_in = %0h",$time,trans.PRDATA, trans.PREADY, trans.PSLVERR, trans.transfer, trans.write_read, trans.addr_in, trans.wdata_in, trans.strb_in);
+          wait(vif.drv_cb.transfer_done);
     repeat(1) @(vif.drv_cb);
     end
     begin

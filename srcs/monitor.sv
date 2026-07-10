@@ -11,9 +11,9 @@ function new(mailbox #(transaction)mon2scb, virtual intf.mon vif);
 	$display("INPUT MONITOR started");
 endfunction
 task run();
-        repeat(4) @(vif.mon_cb);
-        repeat(`num_of_transaction) begin
-                @(vif.mon_cb);
+        repeat(10) @(vif.mon_cb);
+        forever begin
+                repeat(1)@(vif.mon_cb);
                 trans = new();
 		trans.PRDATA = vif.mon_cb.PRDATA;
 		trans.PSLVERR = vif.mon_cb.PSLVERR;
@@ -31,9 +31,11 @@ task run();
     trans.rdata_out = vif.mon_cb.rdata_out;
     trans.transfer_done = vif.mon_cb.transfer_done;
     trans.error = vif.mon_cb.error;
+    trans.PREADY = vif.mon_cb.PREADY;
     if(trans.PENABLE && trans.PREADY && trans.PSEL) begin
         mon2scb.put(trans);
-    $display("[%0t][MONITOR] APB   : PADDR=%0h PSEL=%0b PENABLE=%0b PWRITE=%0b PWDATA=%0h PSTRB=%0h",$time,trans.PADDR,trans.PSEL,trans.PENABLE,trans.PWRITE,trans.PWDATA,trans.PSTRB);
+        $display("[%0t][MON]Packet sent",$time);
+    $display("[%0t][MONITOR] APB   : PADDR=%0h PSEL=%0b PENABLE=%0b PWRITE=%0b PREADY = %0b PWDATA=%0h PSTRB=%0h",$time,trans.PADDR,trans.PSEL,trans.PENABLE,trans.PWRITE,trans.PREADY,trans.PWDATA,trans.PSTRB);
 
     $display("[%0t][MONITOR] OUTPUT: rdata_out=%0h transfer_done=%0b error=%0b",$time,trans.rdata_out,trans.transfer_done,trans.error);
     

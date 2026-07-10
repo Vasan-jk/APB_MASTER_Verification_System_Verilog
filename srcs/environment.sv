@@ -12,6 +12,8 @@ mailbox #(transaction) mon2scb;
 virtual intf.mon mon_vif;
 virtual intf.drv drv_vif;
 
+event ev;
+
 function new(virtual intf.drv drv_vif, virtual intf.mon mon_vif);
   this.drv_vif = drv_vif;
   this.mon_vif = mon_vif;
@@ -34,6 +36,10 @@ task run();
     drv.run();
     mon.run();
     scb.run();
-  join
+  join_any
+  wait(scb.cnt == `num_of_transaction*2);
+  $display("number of transaction: %0d", scb.cnt);
+  repeat(2) @(drv_vif.drv_cb);
+  -> ev;  
 endtask
 endclass

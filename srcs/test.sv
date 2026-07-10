@@ -15,3 +15,21 @@ task run();
  env.run;
 endtask
 endclass
+
+class write_check extends test;
+writ_check wc;
+
+function new(virtual intf.drv drv_vif, virtual intf.mon mon_vif);
+    super.new(drv_vif, mon_vif);
+endfunction
+
+task run();
+ env=new(drv_vif,mon_vif);
+ env.build;
+ begin
+  wc = new();
+  env.gen.trans = wc;
+ end 
+ env.run;
+endtask
+endclass

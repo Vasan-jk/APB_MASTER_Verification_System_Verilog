@@ -1,3 +1,3 @@
 `define ADDR_WIDTH 5
 `define DATA_WIDTH 32
-`define num_of_transaction 16
+`define num_of_transaction 2

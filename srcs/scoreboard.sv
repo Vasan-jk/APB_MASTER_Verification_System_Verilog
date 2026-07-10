@@ -3,7 +3,7 @@ class scoreboard;
 transaction trans;
 mailbox #(transaction)mon2scb;
 bit [`DATA_WIDTH - 1:0] mem [bit[`ADDR_WIDTH - 1:0]];
-
+static int cnt;
 
 function new(mailbox #(transaction)mon2scb);
 	this.mon2scb = mon2scb;
@@ -11,10 +11,13 @@ function new(mailbox #(transaction)mon2scb);
 endfunction
 
 task run();
-  repeat(`num_of_transaction) begin
+  forever begin
   mon2scb.get(trans);
+  cnt++;
+  $display("count = %0d",scoreboard::cnt);
+  //$display("[SCB] %p",trans);
   if(trans.write_read) begin
-    mem[trans.PADDR] = trans.PWDATA;
+    mem[trans.PADDR] = trans.wdata_in;
     if(trans.write_read != trans.PWRITE)begin
       $error("[SCB] write_read = %0b, PWRITE = %0b", trans.write_read, trans.PWRITE);
     end
@@ -30,10 +33,10 @@ task run();
     if(trans.strb_in != trans.PSTRB) begin
       $error("[SCB] strb_in = %0h, PSTRB = %0h",trans.strb_in, trans.PSTRB);
     end
-
+    
   end
   else if(!trans.write_read) begin
-    trans.PRDATA = mem[trans.PADDR];
+    trans.rdata_out = mem[trans.PADDR];
     if((!trans.write_read) != (!trans.PWRITE)) begin
       $error("[SCB] write_read = %0b, PWRITE = %0b", trans.write_read, trans.PWRITE);
     end

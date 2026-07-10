@@ -28,13 +28,23 @@ module top;
 
     intf intrf(clk, reset);
 apb_master #(.ADDR_WIDTH(`ADDR_WIDTH),.DATA_WIDTH(`DATA_WIDTH)) 
-dut (.PCLK(clk),.PRESETn(rst),.PADDR(intrf.PADDR),.PSEL(intrf.PSEL),.PENABLE(intrf.PENABLE),.PWRITE(intrf.PWRITE),.PWDATA(intrf.PWDATA),.PSTRB(intrf.PSTRB),.PRDATA(intrf.PRDATA),.PREADY(intrf.PREADY),.PSLVERR(intrf.PSLVERR),.transfer(intrf.transfer),.write_read(intrf.write_read),.addr_in(intrf.addr_in),.wdata_in(intrf.wdata_in),.strb_in(intrf.strb_in),.rdata_out(intrf.rdata_out),.transfer_done(intrf.transfer_done),.error(intrf.error));
+dut (.PCLK(clk),.PRESETn(reset),.PADDR(intrf.PADDR),.PSEL(intrf.PSEL),.PENABLE(intrf.PENABLE),.PWRITE(intrf.PWRITE),.PWDATA(intrf.PWDATA),.PSTRB(intrf.PSTRB),.PRDATA(intrf.PRDATA),.PREADY(intrf.PREADY),.PSLVERR(intrf.PSLVERR),.transfer(intrf.transfer),.write_read(intrf.write_read),.addr_in(intrf.addr_in),.wdata_in(intrf.wdata_in),.strb_in(intrf.strb_in),.rdata_out(intrf.rdata_out),.transfer_done(intrf.transfer_done),.error(intrf.error));
 
     test tst;
+    write_check wc;
+
+
+
+
+
     initial begin
         tst = new(intrf.drv, intrf.mon);
         $display("-------------------------BASE TEST-------------------------");
-  tst.run();
+        tst.run();
+        wc = new(intrf.drv, intrf.mon);
+        $display("-------------------------WRITE CHECK-------------------------");
+        //wc.run();
+  wait(tst.env.ev.triggered);
   $finish();
     end
     initial begin

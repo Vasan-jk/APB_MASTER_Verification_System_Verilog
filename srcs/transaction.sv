@@ -24,8 +24,21 @@ constraint w{
 constraint base{
 	PREADY == 1;
 	transfer == 1;
-	write_read == 1;
+	//write_read == 1;
 	strb_in == 4'b1111;
 	PSLVERR == 0;
 }
 endclass
+
+
+class writ_check extends transaction;
+constraint write{
+    write_read ==1;
+}
+function void post_randomize();
+  if(PSEL)
+    transfer = 0;
+endfunction
+endclass
+
+
