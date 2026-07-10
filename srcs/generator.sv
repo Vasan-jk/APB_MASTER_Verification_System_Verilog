@@ -15,7 +15,7 @@ task run();
 		copy = new trans;
 		assert(copy.randomize());
 		gen2drv.put(copy);
-		$display("[DRV] PRDATA = %0h, PREADY = %0h, PSLVERR = %0b, transfer = %0b, write_read = %b, addr_in = %0h, wdata_in = %0h, strb_in = %0h",copy.PRDATA, copy.PREADY, copy.PSLVERR, copy.transfer, copy.write_read, copy.addr_in, copy.wdata_in, copy.strb_in);
+		$display("[MON] PRDATA = %0h, PREADY = %0h, PSLVERR = %0b, transfer = %0b, write_read = %b, addr_in = %0h, wdata_in = %0h, strb_in = %0h",copy.PRDATA, copy.PREADY, copy.PSLVERR, copy.transfer, copy.write_read, copy.addr_in, copy.wdata_in, copy.strb_in);
 	end
 endtask
 

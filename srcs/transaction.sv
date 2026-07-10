@@ -1,6 +1,5 @@
-`include "defines.svh"
+//`include "defines.svh"
 class transaction;
-rand bit [`DATA_WIDTH-1:0] PRDATA;
 rand bit PREADY;
 rand bit PSLVERR;
 rand bit transfer;
@@ -8,9 +7,11 @@ rand bit write_read;
 rand bit [`ADDR_WIDTH-1:0]addr_in;
 rand bit [`DATA_WIDTH-1:0]wdata_in;
 rand bit [`DATA_WIDTH/8 - 1:0]strb_in;
+bit [`DATA_WIDTH-1:0] PRDATA;
 bit [`ADDR_WIDTH] PADDR;
 bit PSEL;
 bit PWRITE;
+bit PENABLE;
 bit [`DATA_WIDTH-1:0]PWDATA;
 bit [`DATA_WIDTH/8 -1:0]PSTRB;
 bit [`DATA_WIDTH-1:0] rdata_out;

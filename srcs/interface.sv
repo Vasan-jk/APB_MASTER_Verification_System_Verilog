@@ -1,5 +1,5 @@
 `include "defines.svh"
-interface intf(input PCLK, PRESETn);
+interface intf(input logic PCLK,input logic PRESETn);
 logic [`DATA_WIDTH-1:0] PRDATA;
 logic PREADY;
 logic PSLVERR;
@@ -8,7 +8,7 @@ logic write_read;
 logic [`ADDR_WIDTH-1:0]addr_in;
 logic [`DATA_WIDTH-1:0]wdata_in;
 logic [`DATA_WIDTH/8 - 1:0]strb_in;
-logic [`ADDR_WIDTH] PADDR;
+logic [`ADDR_WIDTH -1:0] PADDR;
 logic PSEL;
 logic PENABLE;
 logic PWRITE;
@@ -30,7 +30,7 @@ input PRDATA, PREADY, PSLVERR, transfer, write_read, addr_in, wdata_in, strb_in;
 input PADDR, PSEL, PENABLE, PWRITE, PWDATA, PSTRB, rdata_out, transfer_done, error;
 endclocking
 
+
 modport drv(clocking drv_cb, input PRESETn);
 modport mon(clocking mon_cb, input PRESETn);
-
 endinterface
