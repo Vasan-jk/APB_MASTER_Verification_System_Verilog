@@ -12,7 +12,7 @@ function new(mailbox #(transaction)mon2scb, virtual intf.mon vif);
 endfunction
 task run();
         repeat(10) @(vif.mon_cb);
-        forever begin
+        repeat(`num_of_transaction) begin
                 repeat(1)@(vif.mon_cb);
                 trans = new();
 		trans.PRDATA = vif.mon_cb.PRDATA;
@@ -32,19 +32,19 @@ task run();
     trans.transfer_done = vif.mon_cb.transfer_done;
     trans.error = vif.mon_cb.error;
     trans.PREADY = vif.mon_cb.PREADY;
-    if(trans.PENABLE && trans.PREADY && trans.PSEL) begin
+    //if(trans.PENABLE && trans.PREADY && trans.PSEL) begin
         mon2scb.put(trans);
         $display("[%0t][MON]Packet sent",$time);
-    $display("[%0t][MONITOR] APB   : PADDR=%0h PSEL=%0b PENABLE=%0b PWRITE=%0b PREADY = %0b PWDATA=%0h PSTRB=%0h",$time,trans.PADDR,trans.PSEL,trans.PENABLE,trans.PWRITE,trans.PREADY,trans.PWDATA,trans.PSTRB);
+    $display("[%0t][MONITOR] APB   : PADDR=%0h PSEL=%0b PENABLE=%0b PWRITE=%0b PREADY = %0b PWDATA=%0h PSTRB=%0h  rdata_out=%0h transfer_done=%0b error=%0b",$time,trans.PADDR,trans.PSEL,trans.PENABLE,trans.PWRITE,trans.PREADY,trans.PWDATA,trans.PSTRB, trans.rdata_out,trans.transfer_done,trans.error);
 
-    $display("[%0t][MONITOR] OUTPUT: rdata_out=%0h transfer_done=%0b error=%0b",$time,trans.rdata_out,trans.transfer_done,trans.error);
+    //$display("[%0t][MONITOR] OUTPUT: rdata_out=%0h transfer_done=%0b error=%0b",$time,trans.rdata_out,trans.transfer_done,trans.error);
     
-    $display("[%0t][MONITOR] INPUT : transfer=%0b write_read=%0b addr_in=%0h wdata_in=%0h strb_in=%0h",$time,trans.transfer,trans.write_read,trans.addr_in,trans.wdata_in,trans.strb_in);
+    $display("[%0t][MONITOR] INPUT : transfer=%0b write_read=%0b addr_in=%0h wdata_in=%0h strb_in=%0h, PRDATA=%0h PREADY=%0b PSLVERR=%0b",$time,trans.transfer,trans.write_read,trans.addr_in,trans.wdata_in,trans.strb_in, trans.PRDATA,trans.PREADY,trans.PSLVERR);
 
-		$display("[%0t][MONITOR] SLAVE : PRDATA=%0h PREADY=%0b PSLVERR=%0b",$time,trans.PRDATA,trans.PREADY,trans.PSLVERR);
-    end
-	end
+		//$display("[%0t][MONITOR] SLAVE : PRDATA=%0h PREADY=%0b PSLVERR=%0b",$time,trans.PRDATA,trans.PREADY,trans.PSLVERR);
+    //end 
         @(vif.mon_cb);
+	end
 endtask
 
 endclass

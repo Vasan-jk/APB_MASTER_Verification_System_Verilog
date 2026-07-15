@@ -32,8 +32,9 @@ dut (.PCLK(clk),.PRESETn(reset),.PADDR(intrf.PADDR),.PSEL(intrf.PSEL),.PENABLE(i
 
     test tst;
     write_check wc;
-
-
+    read_check rd;
+    back_to_back_write b2bwr;
+    back_to_back_read b2brd;
 
 
 
@@ -43,8 +44,18 @@ dut (.PCLK(clk),.PRESETn(reset),.PADDR(intrf.PADDR),.PSEL(intrf.PSEL),.PENABLE(i
         tst.run();
         wc = new(intrf.drv, intrf.mon);
         $display("-------------------------WRITE CHECK-------------------------");
-        //wc.run();
-  wait(tst.env.ev.triggered);
+        wc.run();
+        rd = new(intrf.drv, intrf.mon);
+        $display("-------------------------READ CHECK-------------------------");
+        rd.run();
+        b2bwr = new(intrf.drv, intrf.mon);
+        $display("-------------------------BACK TO BACK WRITE CHECK-------------------------");
+        b2bwr.run();
+        b2brd = new(intrf.drv, intrf.mon);
+        $display("-------------------------BACK TO BACK READ CHECK-------------------------");
+        b2brd.run();
+        
+        //repeat (2) wait(tst.env.ev.triggered);
   $finish();
     end
     initial begin

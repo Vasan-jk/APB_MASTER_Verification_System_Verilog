@@ -36,10 +36,10 @@ task run();
     drv.run();
     mon.run();
     scb.run();
-  join_any
-  wait(scb.cnt == `num_of_transaction*2);
-  $display("number of transaction: %0d", scb.cnt);
-  repeat(2) @(drv_vif.drv_cb);
-  -> ev;  
+  join
+  //wait(scb.cnt == `num_of_transaction);
+  //$display("number of transaction: %0d", scb.cnt);
+  //repeat(2) @(drv_vif.drv_cb);
+  //-> ev;  
 endtask
 endclass
