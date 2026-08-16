@@ -4,7 +4,7 @@ package apb_package;
  `include "generator.sv"
  `include "drv.sv"
  `include "monitor.sv"
- `include "scb22.sv"
+ `include "scb2.sv"
  `include "environment.sv"
  `include "test.sv"
 endpackage
