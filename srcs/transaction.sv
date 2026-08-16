@@ -17,14 +17,16 @@ bit [`DATA_WIDTH/8 -1:0]PSTRB;
 bit [`DATA_WIDTH-1:0] rdata_out;
 bit transfer_done;
 bit error;
-int wait_state;
+rand int wait_state;
+int n;
+bit wrd;
 constraint w{
 	wait_state == 0;
 	}
 constraint base{
 	PREADY == 1;
-	//soft transfer == 1;
-	//write_read == 1;
+	transfer == 1;
+  soft write_read == 1;
 	strb_in == 4'b1111;
 	PSLVERR == 0;
 }

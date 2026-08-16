@@ -13,7 +13,7 @@ function new(mailbox #(transaction)gen2drv, virtual intf.drv vif);
 endfunction
 
 task run();
-  repeat(4) @(vif.drv_cb);
+  repeat(3) @(vif.drv_cb);
   repeat(`num_of_transaction) begin
     trans = new();
     gen2drv.get(trans);

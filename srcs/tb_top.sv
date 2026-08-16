@@ -16,13 +16,11 @@ module top;
     end
 
     initial begin
-        reset = 0;
-        repeat (1) @(posedge clk);
         reset = 1;
-        repeat (1) @(posedge clk);
-  reset = 0;
-        repeat (1) @(posedge clk);
-  reset = 1;
+        @(posedge clk);
+        reset = 0;
+        @(posedge clk);
+        reset = 1;
     end
 
 
@@ -55,7 +53,6 @@ dut (.PCLK(clk),.PRESETn(reset),.PADDR(intrf.PADDR),.PSEL(intrf.PSEL),.PENABLE(i
         $display("-------------------------BACK TO BACK READ CHECK-------------------------");
         b2brd.run();
         
-        //repeat (2) wait(tst.env.ev.triggered);
   $finish();
     end
     initial begin
